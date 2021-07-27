@@ -71,27 +71,22 @@ void TrafficLight::cycleThroughPhases()
   std::default_random_engine generator;
   std::uniform_int_distribution<int> distribution(4,6);
   int cycleDuration = distribution(generator);
-  auto t1 = std::chrono::system_clock::now();
+  auto t1 = std::chrono::high_resolution_clock::now();
   while(true){
     std::this_thread::sleep_for(std::chrono::milliseconds(1));
-    auto t2 = std::chrono::system_clock::now();
-    auto duration = std::chrono::duration_cast<std::chrono::seconds>(t2-t1).count();
-            std::cout<<"duration "<<duration<<std::endl;
-
-    if(std::chrono::duration_cast<std::chrono::seconds>(t2-t1).count() >= cycleDuration){
-      if(_currentPhase == TrafficLightPhase::green){
-        _currentPhase = TrafficLightPhase::red;
-        std::cout<<"toggle red"<<std::endl;
+    auto t2 = std::chrono::high_resolution_clock::now();
+    if(std::chrono::duration_cast<std::chrono::seconds>(t2-t1).count() > cycleDuration){
+      if(_currentPhase == green){
+        _currentPhase = red;
       }else{
-        _currentPhase = TrafficLightPhase::green;
-                std::cout<<"toggle green"<<std::endl;
-
+        _currentPhase = green;
       }
-    }
-
-    t1 = std::chrono::system_clock::now();
+          t1 = std::chrono::high_resolution_clock::now();
     cycleDuration = distribution(generator);
     _messsagesQueue.send(std::move(_currentPhase));
+    }
+
+
   }
       // FP.2a : Implement the function with an infinite loop that measures the time between two loop cycles 
     // and toggles the current phase of the traffic light between red and green and sends an update method 
