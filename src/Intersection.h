@@ -49,7 +49,7 @@ public:
 private:
 
     // typical behaviour methods
-    void processVehicleQueue();
+    void processVehicleQueue(); 
 
 
     // private members
